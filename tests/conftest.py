@@ -1,7 +1,7 @@
 """Shared test fixtures.
 
-Provides mock LLM, mock Spark session, and sample data
-for unit tests that don't need real infrastructure.
+Provides mock LLM, sample data for unit tests
+that don't need real infrastructure.
 """
 
 from __future__ import annotations
@@ -9,7 +9,6 @@ from __future__ import annotations
 from unittest.mock import MagicMock
 
 import pytest
-from langchain_core.messages import AIMessage
 
 
 class MockLLM:
@@ -19,9 +18,11 @@ class MockLLM:
         self.response = response
         self.call_count = 0
 
-    def invoke(self, messages: list, **kwargs: object) -> AIMessage:
+    def invoke(self, messages: list, **kwargs: object) -> MagicMock:
         self.call_count += 1
-        return AIMessage(content=self.response)
+        mock_msg = MagicMock()
+        mock_msg.content = self.response
+        return mock_msg
 
 
 @pytest.fixture
