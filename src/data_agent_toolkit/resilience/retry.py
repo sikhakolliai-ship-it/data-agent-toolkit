@@ -58,9 +58,7 @@ def retry_with_backoff(
                             func.__name__,
                             str(e),
                         )
-                        raise RetryExhaustedError(
-                            f"{func.__name__} failed after {max_retries} retries: {e}"
-                        ) from e
+                        raise RetryExhaustedError(f"{func.__name__} failed after {max_retries} retries: {e}") from e
 
                     delay = min(base_delay * (2**attempt) + random.uniform(0, 1), max_delay)
                     logger.warning(

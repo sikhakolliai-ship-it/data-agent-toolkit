@@ -64,6 +64,7 @@ class TestCircuitBreaker:
         assert cb.state == "OPEN"
 
         import time
+
         time.sleep(0.02)  # Wait for recovery timeout
         assert cb.state == "HALF_OPEN"
         assert cb.allow_request() is True

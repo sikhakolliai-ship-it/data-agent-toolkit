@@ -57,9 +57,9 @@ Return as JSON with these exact keys:
 - timeline: Any mentioned deadlines
 - requestor_team: Which team submitted this
 
-Ticket ID: {state['ticket_id']}
+Ticket ID: {state["ticket_id"]}
 Ticket Content:
-{state['ticket_text']}
+{state["ticket_text"]}
 """
     response = llm.invoke([HumanMessage(content=prompt)])
     logger.info("Extracted key info for %s", state["ticket_id"])
