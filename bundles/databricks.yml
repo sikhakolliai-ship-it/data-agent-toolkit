@@ -1,0 +1,34 @@
+# Declarative Automation Bundle configuration
+# Formerly: Databricks Asset Bundles (DABs)
+# Docs: https://docs.databricks.com/dev-tools/bundles/
+
+bundle:
+  name: data-agent-toolkit
+
+variables:
+  catalog:
+    default: agent_toolkit_dev
+  schema:
+    default: default
+
+artifacts:
+  agent_toolkit_wheel:
+    type: whl
+    path: .
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${var.databricks_host}
+
+  prod:
+    mode: production
+    workspace:
+      host: ${var.databricks_host}
+    run_as:
+      service_principal_name: agent-toolkit-sp
+
+include:
+  - resources/*.yml

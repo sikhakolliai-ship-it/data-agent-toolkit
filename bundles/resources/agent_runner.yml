@@ -1,0 +1,15 @@
+# Lakeflow Job: runs the Feature Writer agent on a schedule
+resources:
+  jobs:
+    feature_writer_runner:
+      name: "[${bundle.target}] Feature Writer Agent"
+      schedule:
+        quartz_cron_expression: "0 0 8 * * ?"  # Daily at 8 AM
+        timezone_id: America/New_York
+      tasks:
+        - task_key: run_feature_writer
+          python_wheel_task:
+            package_name: data_agent_toolkit
+            entry_point: main
+          libraries:
+            - whl: ../dist/*.whl
