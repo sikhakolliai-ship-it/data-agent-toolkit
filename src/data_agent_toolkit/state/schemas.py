@@ -5,13 +5,12 @@ This is the shared memory that enables Phase 2 connected agents.
 """
 
 from datetime import datetime
-from enum import Enum
-from typing import Optional
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 
-class AgentRunStatus(str, Enum):
+class AgentRunStatus(StrEnum):
     """Lifecycle status of an agent execution."""
 
     STARTED = "started"
@@ -54,11 +53,11 @@ class AgentRunRecord(BaseModel):
     )
 
     # What the agent produced
-    output_artifact_uri: Optional[str] = Field(
+    output_artifact_uri: str | None = Field(
         default=None,
         description="URI to the output (e.g. ADO feature URL, Delta table path)",
     )
-    output_artifact_type: Optional[str] = Field(
+    output_artifact_type: str | None = Field(
         default=None,
         description="e.g. 'ado_feature', 'sttm', 'dq_rule', 'pipeline_config'",
     )
@@ -75,8 +74,8 @@ class AgentRunRecord(BaseModel):
 
     # Human interaction
     human_review_required: bool = False
-    human_reviewer: Optional[str] = None
-    human_decision: Optional[str] = None  # "approved", "rejected", "modified"
+    human_reviewer: str | None = None
+    human_decision: str | None = None  # "approved", "rejected", "modified"
 
     # Token usage and cost tracking
     total_tokens_used: int = 0
@@ -85,8 +84,8 @@ class AgentRunRecord(BaseModel):
 
     # Timestamps
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    completed_at: Optional[datetime] = None
-    duration_seconds: Optional[float] = None
+    completed_at: datetime | None = None
+    duration_seconds: float | None = None
 
 
 class TemplateRegistryEntry(BaseModel):

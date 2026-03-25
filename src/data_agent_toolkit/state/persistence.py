@@ -27,7 +27,7 @@ class AgentStateWriter:
         related = writer.get_related_runs("RITM0012345")
     """
 
-    def __init__(self, spark: "SparkSession") -> None:  # noqa: F821
+    def __init__(self, spark: SparkSession) -> None:  # noqa: F821
         self.spark = spark
         self.table_path = settings.agent_history_path
 

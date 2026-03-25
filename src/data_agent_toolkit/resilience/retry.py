@@ -9,10 +9,11 @@ from __future__ import annotations
 import logging
 import random
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from functools import wraps
-from typing import Any, Callable, TypeVar
+from typing import Any, TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -101,9 +102,12 @@ class CircuitBreaker:
 
     @property
     def state(self) -> str:
-        if self._state == "OPEN" and self._last_failure_time:
-            if datetime.utcnow() - self._last_failure_time > timedelta(seconds=self.recovery_timeout):
-                self._state = "HALF_OPEN"
+        if (
+            self._state == "OPEN"
+            and self._last_failure_time
+            and datetime.utcnow() - self._last_failure_time > timedelta(seconds=self.recovery_timeout)
+        ):
+            self._state = "HALF_OPEN"
         return self._state
 
     def record_success(self) -> None:
@@ -121,6 +125,4 @@ class CircuitBreaker:
         current_state = self.state
         if current_state == "CLOSED":
             return True
-        if current_state == "HALF_OPEN":
-            return True
-        return False
+        return current_state == "HALF_OPEN"
